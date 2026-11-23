@@ -1,6 +1,7 @@
 """AmmeterTestFramework: config-driven orchestration of a full test run."""
 import contextlib
 import copy
+import importlib.util
 import getpass
 import logging
 import platform
@@ -144,13 +145,23 @@ class AmmeterTestFramework:
             result["plots"] = [p.name for p in plots]
             self.store.save_run(result, samples)  # re-save so the plot list is archived too
         if self.config["result_management"]["html_report"]:
-            write_html_report(result, run_dir, plots)
+            write_html_report(result, run_dir, plots, self._no_plots_reason(viz, plots))
         test_logger.info(f"Run {run_id} finished with status {status}; saved to {run_dir}")
         test_logger.close()
 
         result["samples"] = samples
         result["run_dir"] = str(run_dir)
         return result
+
+    @staticmethod
+    def _no_plots_reason(viz: Dict, plots: List) -> Optional[str]:
+        if plots:
+            return None
+        if not viz["enabled"]:
+            return "plotting is disabled (analysis.visualization.enabled is false, or --no-plots was used)."
+        if importlib.util.find_spec("matplotlib") is None:
+            return "matplotlib is not installed. Run: pip install -r requirements-optional.txt"
+        return "no successful samples to plot."
 
     def _worker(self, name: str, plan: SamplingPlan, stop_event: threading.Event, outcomes: Dict[str, Dict]) -> None:
         try:

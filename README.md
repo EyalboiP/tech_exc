@@ -15,6 +15,7 @@ ammeter emulators (Greenlee, ENTES, CIRCUTOR). The project lives in [`Test_QA_ex
 ```sh
 cd Test_QA_expanded
 pip install -r requirements.txt                 # only PyYAML is required
+pip install -r requirements-optional.txt        # matplotlib: needed for the plots in the report (optional)
 python main.py                                  # emulators + demo readings + a full test run
 python run_tests.py --count 50 --frequency 5    # full CLI (see --help)
 pytest -q                                       # run the tests (pip install -r requirements-dev.txt first)

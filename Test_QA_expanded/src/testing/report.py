@@ -46,7 +46,7 @@ def format_console_summary(result: Dict, metrics: Optional[List[str]] = None) ->
     return "\n".join(lines)
 
 
-def write_html_report(result: Dict, run_dir: Path, plots: List[Path]) -> Path:
+def write_html_report(result: Dict, run_dir: Path, plots: List[Path], no_plots_reason: Optional[str] = None) -> Path:
     esc = html.escape
     st_rows = []
     for name, info in result["ammeters"].items():
@@ -81,7 +81,7 @@ Sampling: {meta['sampling']['count']} measurements @ {meta['sampling']['frequenc
 <table><tr><th>rank</th><th>ammeter</th><th>availability</th><th>CV</th><th>CV vs best</th><th>z</th><th>conforms</th></tr>
 {''.join(rank_rows)}</table>
 <p>Most reliable: <b>{esc(str((result.get('comparison') or {}).get('most_reliable')))}</b></p>
-<h2>Plots</h2>{images or '<p>No plots (disabled or matplotlib not installed).</p>'}
+<h2>Plots</h2>{images or f'<p>No plots: {esc(no_plots_reason or "none were generated")}</p>'}
 </body></html>"""
     path = run_dir / "report.html"
     path.write_text(page, encoding="utf-8")
