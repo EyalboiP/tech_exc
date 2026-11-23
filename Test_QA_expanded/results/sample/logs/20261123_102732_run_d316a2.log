@@ -1,0 +1,2 @@
+2026-11-23 10:27:32,169 | INFO    | test_run_d316a2_20261123_102732_4429441664 | Run 20261123_102732_d316a2 starting: ammeters=['greenlee', 'entes', 'circutor'], plan=SamplingPlan(count=60, frequency_hz=10.0, duration_s=6.0)
+2026-11-23 10:27:38,874 | INFO    | test_run_d316a2_20261123_102732_4429441664 | Run 20261123_102732_d316a2 finished with status completed; saved to results/sample/runs/20261123_102732_d316a2

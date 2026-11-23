@@ -1,0 +1,2 @@
+# Optional: enables PNG plots. Without it the framework still runs and skips plotting.
+matplotlib>=3.8

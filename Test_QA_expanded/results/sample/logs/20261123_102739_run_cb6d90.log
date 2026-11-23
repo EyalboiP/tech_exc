@@ -1,0 +1,2 @@
+2026-11-23 10:27:39,143 | INFO    | test_run_cb6d90_20261123_102739_4423055888 | Run 20261123_102739_cb6d90 starting: ammeters=['greenlee', 'entes', 'circutor'], plan=SamplingPlan(count=60, frequency_hz=10.0, duration_s=6.0)
+2026-11-23 10:27:45,887 | INFO    | test_run_cb6d90_20261123_102739_4423055888 | Run 20261123_102739_cb6d90 finished with status completed_with_errors; saved to results/sample/runs/20261123_102739_cb6d90

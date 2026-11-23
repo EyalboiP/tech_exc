@@ -1,37 +1,75 @@
+"""Starts the three ammeter emulators, requests one measurement from each, then runs the
+full test framework using config/config.yaml.
+
+    python main.py                  # emulators + one demo reading each + full test run
+    python main.py --demo-only      # just the emulators and one reading each (the original behaviour)
+    python main.py --keep-running   # start the emulators and leave them up until Ctrl+C (for nc / manual testing)
+    python main.py --config my.yaml
+
+For more control (CLI flags for counts, frequency, fault simulation, history...) use run_tests.py.
+"""
+import argparse
+import sys
 import threading
-import time
 
-from Ammeters.Circutor_Ammeter import CircutorAmmeter
-from Ammeters.Entes_Ammeter import EntesAmmeter
-from Ammeters.Greenlee_Ammeter import GreenleeAmmeter
 from Ammeters.client import request_current_from_ammeter
+from src.testing.emulators import EmulatorManager
+from src.testing.report import format_console_summary
+from src.testing.test_framework import AmmeterTestFramework
+from src.utils.config import ConfigError, load_config
+from src.utils.logger import configure_logging
 
 
-def run_greenlee_emulator():
-    greenlee = GreenleeAmmeter(5001)
-    greenlee.start_server()
+def demo_requests(config: dict) -> None:
+    """One raw request per ammeter, using the commands from the config (README commands)."""
+    for name in config["testing"]["ammeters"] or config["ammeters"]:
+        cfg = config["ammeters"][name]
+        print(f"[{name}]", end=" ")
+        try:
+            request_current_from_ammeter(cfg["port"], cfg["command"].encode("utf-8"), host=config["testing"]["host"])
+        except OSError as exc:
+            print(f"request failed: {exc}")
 
-def run_entes_emulator():
-    entes = EntesAmmeter(5002)
-    entes.start_server()
 
-def run_circutor_emulator():
-    circutor = CircutorAmmeter(5003)
-    circutor.start_server()
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--config", default="config/config.yaml")
+    parser.add_argument("--demo-only", action="store_true", help="skip the full test run")
+    parser.add_argument("--keep-running", action="store_true",
+                        help="start the emulators and keep them running until Ctrl+C")
+    args = parser.parse_args(argv)
+
+    try:
+        config = load_config(args.config)
+        configure_logging(config["logging"]["level"])
+        names = config["testing"]["ammeters"] or list(config["ammeters"])
+        if args.keep_running:
+            with EmulatorManager(config, names):
+                print("Emulators running - press Ctrl+C to stop.")
+                try:
+                    threading.Event().wait()
+                except KeyboardInterrupt:
+                    print("\nStopping emulators.")
+            return 0
+        if args.demo_only:
+            with EmulatorManager(config, names):  # waits until every port is listening (no fixed sleep)
+                demo_requests(config)
+            return 0
+
+        framework = AmmeterTestFramework(args.config)
+        with EmulatorManager(config, names):
+            demo_requests(config)
+            # Emulators are already up: the framework must not start a second set on the same ports.
+            framework.config["testing"]["start_emulators"] = False
+            result = framework.run()
+    except (ConfigError, ValueError, RuntimeError) as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 2
+
+    print(format_console_summary(result, framework.config["analysis"]["statistical_metrics"]))
+    print(f"\nResults saved in: {result['run_dir']}")
+    return 0 if result["status"] == "completed" else 1
+
 
 if __name__ == "__main__":
-    # Start each ammeter in a separate thread
-    threading.Thread(target=run_greenlee_emulator, daemon=True).start()
-    threading.Thread(target=run_entes_emulator, daemon=True).start()
-    threading.Thread(target=run_circutor_emulator, daemon=True).start()
-
-    # This section is commented out because it shouldn't work.
-    # Read the README.md file as well as the source code if you need, and fix the problem.
-
-    # Wait for the servers to start, if you have problem restarting the servers between runs try increasing sleep time.
-    time.sleep(5)
-    # request_current_from_ammeter(5001, b'MEASURE_GREENLEE')  # Request from Greenlee Ammeter
-    # request_current_from_ammeter(5002, b'MEASURE_ENTES')  # Request from ENTES Ammeter
-    # request_current_from_ammeter(5003, b'MEASURE_CIRCUTOR')  # Request from CIRCUTOR Ammeter
-
-    pass
+    sys.exit(main())

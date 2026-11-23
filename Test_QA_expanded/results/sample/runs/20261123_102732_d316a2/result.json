@@ -1,0 +1,253 @@
+{
+  "run_id": "20261123_102732_d316a2",
+  "status": "completed",
+  "started_at": "2026-11-23T10:27:32",
+  "finished_at": "2026-11-23T10:27:38",
+  "metadata": {
+    "framework_version": "1.0.0",
+    "host": "DV3147-MAC.local",
+    "user": "eyaldan",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "python": "3.12.6",
+    "sampling": {
+      "count": 60,
+      "frequency_hz": 10.0,
+      "duration_s": 6.0
+    },
+    "emulators_started": true,
+    "fault_simulation": {
+      "enabled": false,
+      "drop_rate": 0.0,
+      "garbage_rate": 0.0,
+      "delay_rate": 0.0,
+      "delay_ms": 0,
+      "seed": null
+    },
+    "config": {
+      "testing": {
+        "host": "localhost",
+        "start_emulators": true,
+        "startup_timeout_seconds": 5,
+        "ammeters": null,
+        "timeout_seconds": 2,
+        "retries": 0,
+        "sampling": {
+          "measurements_count": 60,
+          "total_duration_seconds": null,
+          "sampling_frequency_hz": 10.0
+        }
+      },
+      "ammeters": {
+        "greenlee": {
+          "port": 5000,
+          "command": "MEASURE_GREENLEE -get_measurement"
+        },
+        "entes": {
+          "port": 5001,
+          "command": "MEASURE_ENTES -get_data"
+        },
+        "circutor": {
+          "port": 5002,
+          "command": "MEASURE_CIRCUTOR -get_measurement"
+        }
+      },
+      "fault_simulation": {
+        "enabled": false,
+        "drop_rate": 0.0,
+        "garbage_rate": 0.0,
+        "delay_rate": 0.0,
+        "delay_ms": 0,
+        "seed": null
+      },
+      "analysis": {
+        "statistical_metrics": [
+          "mean",
+          "median",
+          "std",
+          "min",
+          "max"
+        ],
+        "conformance_z_threshold": 4.0,
+        "visualization": {
+          "enabled": true,
+          "plot_types": [
+            "time_series",
+            "histogram",
+            "boxplot"
+          ]
+        }
+      },
+      "result_management": {
+        "results_dir": "results/sample",
+        "save_json": true,
+        "save_csv": true,
+        "save_sqlite": true,
+        "html_report": true
+      },
+      "logging": {
+        "level": "INFO"
+      }
+    }
+  },
+  "ammeters": {
+    "greenlee": {
+      "port": 5000,
+      "command": "MEASURE_GREENLEE -get_measurement",
+      "stats": {
+        "count_requested": 60,
+        "count_attempted": 60,
+        "count_ok": 60,
+        "count_failed": 0,
+        "error_rate": 0.0,
+        "error_types": {},
+        "requested_frequency_hz": 10.0,
+        "mean": 0.826415455929627,
+        "median": 0.10974467383943798,
+        "std": 3.442494269689513,
+        "variance": 11.850766796845132,
+        "min": 0.021247217177264834,
+        "max": 25.84338402173211,
+        "range": 25.822136804554845,
+        "cv": 4.16557343523674,
+        "q1": 0.07431333554572847,
+        "q3": 0.24719907579004055,
+        "iqr": 0.17288574024431208,
+        "p95": 2.215168376275381,
+        "outliers": 8,
+        "consistency": "variable",
+        "duration_s": 5.910135542002536,
+        "achieved_frequency_hz": 9.982850576047701,
+        "interval_jitter_ms": 4.8875378569478265,
+        "mean_latency_ms": 2.8723207998458142,
+        "max_latency_ms": 5.335875001037493,
+        "expected_mean": 0.3803068471912088,
+        "expected_std": 1.8855680051325336,
+        "z_score": 1.832626781469186,
+        "conforms": true
+      }
+    },
+    "entes": {
+      "port": 5001,
+      "command": "MEASURE_ENTES -get_data",
+      "stats": {
+        "count_requested": 60,
+        "count_attempted": 60,
+        "count_ok": 60,
+        "count_failed": 0,
+        "error_rate": 0.0,
+        "error_types": {},
+        "requested_frequency_hz": 10.0,
+        "mean": 67.84063979209478,
+        "median": 61.3555054089115,
+        "std": 39.409496963463305,
+        "variance": 1553.1084509132234,
+        "min": 10.943504827831458,
+        "max": 164.4848612761714,
+        "range": 153.54135644833994,
+        "cv": 0.5809128139746045,
+        "q1": 41.623112846320716,
+        "q3": 87.5842515901137,
+        "iqr": 45.96113874379298,
+        "p95": 142.00358293852247,
+        "outliers": 1,
+        "consistency": "moderate",
+        "duration_s": 5.910121042001265,
+        "achieved_frequency_hz": 9.982875068159624,
+        "interval_jitter_ms": 4.80680626336422,
+        "mean_latency_ms": 2.883665299790058,
+        "max_latency_ms": 5.532167000637855,
+        "expected_mean": 68.75,
+        "expected_std": 41.81432170919434,
+        "z_score": -0.16845601205322067,
+        "conforms": true
+      }
+    },
+    "circutor": {
+      "port": 5002,
+      "command": "MEASURE_CIRCUTOR -get_measurement",
+      "stats": {
+        "count_requested": 60,
+        "count_attempted": 60,
+        "count_ok": 60,
+        "count_failed": 0,
+        "error_rate": 0.0,
+        "error_types": {},
+        "requested_frequency_hz": 10.0,
+        "mean": 0.02661298925556749,
+        "median": 0.024062793711872404,
+        "std": 0.01300819033700743,
+        "variance": 0.00016921301584381347,
+        "min": 0.006463444358131693,
+        "max": 0.057818170668517695,
+        "range": 0.051354726310386,
+        "cv": 0.48879102652048345,
+        "q1": 0.017581997194222376,
+        "q3": 0.035346394311170024,
+        "iqr": 0.017764397116947647,
+        "p95": 0.050692515643539,
+        "outliers": 0,
+        "consistency": "moderate",
+        "duration_s": 5.910134957997798,
+        "achieved_frequency_hz": 9.982851562494215,
+        "interval_jitter_ms": 5.099961321479802,
+        "mean_latency_ms": 2.7803839831904043,
+        "max_latency_ms": 6.801375002396526,
+        "expected_mean": 0.03025,
+        "expected_std": 0.015138114149391266,
+        "z_score": -1.8610088289935338,
+        "conforms": true
+      }
+    }
+  },
+  "comparison": {
+    "method": "rank by availability, then conformance to expected mean, then coefficient of variation",
+    "ranking": [
+      {
+        "ammeter": "circutor",
+        "availability": 1.0,
+        "mean": 0.02661298925556749,
+        "cv": 0.48879102652048345,
+        "consistency": "moderate",
+        "z_score": -1.8610088289935338,
+        "conforms": true,
+        "mean_latency_ms": 2.7803839831904043,
+        "rank": 1,
+        "relative_precision": 1.0
+      },
+      {
+        "ammeter": "entes",
+        "availability": 1.0,
+        "mean": 67.84063979209478,
+        "cv": 0.5809128139746045,
+        "consistency": "moderate",
+        "z_score": -0.16845601205322067,
+        "conforms": true,
+        "mean_latency_ms": 2.883665299790058,
+        "rank": 2,
+        "relative_precision": 1.1884686552245054
+      },
+      {
+        "ammeter": "greenlee",
+        "availability": 1.0,
+        "mean": 0.826415455929627,
+        "cv": 4.16557343523674,
+        "consistency": "variable",
+        "z_score": 1.832626781469186,
+        "conforms": true,
+        "mean_latency_ms": 2.8723207998458142,
+        "rank": 3,
+        "relative_precision": 8.52219703150008
+      }
+    ],
+    "most_reliable": "circutor"
+  },
+  "plots": [
+    "greenlee_time_series.png",
+    "entes_time_series.png",
+    "circutor_time_series.png",
+    "greenlee_histogram.png",
+    "entes_histogram.png",
+    "circutor_histogram.png",
+    "comparison_boxplot.png"
+  ]
+}
